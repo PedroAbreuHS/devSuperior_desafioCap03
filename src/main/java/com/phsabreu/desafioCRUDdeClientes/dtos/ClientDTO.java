@@ -1,35 +1,50 @@
-package com.phsabreu.desafioCRUDdeClientes.Entities;
+package com.phsabreu.desafioCRUDdeClientes.dtos;
 
-import jakarta.persistence.*;
+import com.phsabreu.desafioCRUDdeClientes.Entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
-public class Client {
+public class ClientDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Campo de preenchimento obrigatório.")
+    @Size(min = 3, max = 100, message = "Nome precisa possuir de 3 a 100 caracteres.")
     private String name;
 
+    @NotBlank(message = "Campo de preenchimento obrigatório.")
+    @Size(min = 10, max = 10, message = "Campo deve conter 10 caracteres.")
     private String cpf;
 
+    @Positive(message = "Renda deve ser positiva.")
+    @NotBlank(message = "Campo de preenchimeto obrigatório")
     private Double income;
 
+    @NotBlank(message = "Campo de preenchimeto obrigatório")
     private LocalDate birthDay;
 
+    @NotBlank(message = "Campo de preenchimeto obrigatório")
     private Integer children;
 
-    public Client() { }
-
-    public Client(Long id, String name, String cpf, Double income, LocalDate birthDay, Integer children) {
+    public ClientDTO(Long id, String name, String cpf, Double income, LocalDate birthDay, Integer children) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
         this.income = income;
         this.birthDay = birthDay;
         this.children = children;
+    }
+
+    public ClientDTO(Client entity) {
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.cpf = entity.getCpf();
+        this.income = entity.getIncome();
+        this.birthDay = entity.getBirthDay();
+        this.children = entity.getChildren();
     }
 
     public Long getId() {
@@ -78,20 +93,5 @@ public class Client {
 
     public void setChildren(Integer children) {
         this.children = children;
-    }
-
-    @Override
-    public boolean equals(Object o){
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
-
-        Client client = (Client) o;
-
-        return Objects.equals(id, client.id);
-    }
-
-    @Override
-    public int hashCode(){
-        return id != null ? id.hashCode() : 0;
     }
 }
